@@ -2,9 +2,8 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Create and style clusters</title>
+<title>Display icons above 3D buildings</title>
 <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
-<!--external CSS, js files-->
 <link href="https://api.mapbox.com/mapbox-gl-js/v3.5.1/mapbox-gl.css" rel="stylesheet">
 <script src="https://api.mapbox.com/mapbox-gl-js/v3.5.1/mapbox-gl.js"></script>
 <style>
@@ -14,46 +13,83 @@ body { margin: 0; padding: 0; }
 </head>
 <body>
 <div id="map"></div>
-
 <script>
+
 	mapboxgl.accessToken = 'pk.eyJ1IjoibjFjaHJpc3RpYW4iLCJhIjoiY2x6MG80Y2hrMTgxaDJrcHNkMWtvZWx0MCJ9.kHvL5J2yJH2lPYSmk7sBng';
     const map = new mapboxgl.Map({
         container: 'map',
-        // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
-        style: "mapbox://styles/examples/clg45vm7400c501pfubolb0xz",
-        center: [114.17460, 22.29529],
-        zoom: 12
+        style: 'mapbox://styles/mapbox/standard',
+        center: [114.17482, 22.29425],
+        zoom: 15.1,
+        pitch: 60
     });
+
     const geodata = {
     "type": "FeatureCollection",
     "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
     "features": [
 
-    { "type": "Feature", "properties": { "id": "uu60251357", "building_name": "K11 ARTUS", "building_type": "Residential" }, "geometry": { "type": "Point", "coordinates": [ 114.17450, 22.29429, 0] } },
-    { "type": "Feature", "properties": { "id": "ak16989960", "building_name": "Signal Hill Garden", "building_type": "Residential" }, "geometry": { "type": "Point", "coordinates": [ 114.17470, 22.29729, 0 ] } },
-    { "type": "Feature", "properties": { "id": "hv61935031", "building_name": "7-eleven", "building_type": "Commerical" }, "geometry": { "type": "Point", "coordinates": [ 114.17490, 22.29829, 0 ] } },
-    { "type": "Feature", "properties": { "id": "nc72905151", "building_name": "Auto Plaza", "building_type": "Commerical" }, "geometry": { "type": "Point", "coordinates": [114.17473, 22.29729, 0 ] } },
-    { "type": "Feature", "properties": { "id": "mb80259404", "building_name": "7-eleven", "building_type": "Industrial" }, "geometry": { "type": "Point", "coordinates": [ 114.17469, 22.29629, 0] } },
-    { "type": "Feature", "properties": { "id": "hv61935031", "building_name": "7-eleven", "building_type": "Commerical" }, "geometry": { "type": "Point", "coordinates": [ 114.17948, 22.30492, 0 ] } },
-    { "type": "Feature", "properties": { "id": "nc72905151", "building_name": "Auto Plaza", "building_type": "Commerical" }, "geometry": { "type": "Point", "coordinates": [114.17978, 22.30542, 0 ] } },
-    { "type": "Feature", "properties": { "id": "mb80259404", "building_name": "7-eleven (PolyU)", "building_type": "Industrial" }, "geometry": { "type": "Point", "coordinates": [ 114.17968, 22.30432, 0] } },
-    { "type": "Feature", "properties": { "id": "nc72905151", "building_name": "PolyU", "building_type": "Education" }, "geometry": { "type": "Point", "coordinates": [114.17928, 22.30442, 0 ] } },
-    { "type": "Feature", "properties": { "id": "nc72905151", "building_name": "Auto Plaza", "building_type": "Commerical" }, "geometry": { "type": "Point", "coordinates": [114.16946, 22.30394, 0 ] } },
-    { "type": "Feature", "properties": { "id": "mb80259404", "building_name": "7-eleven", "building_type": "Commerical" }, "geometry": { "type": "Point", "coordinates": [ 114.16976, 22.30384, 0] } },
-    { "type": "Feature", "properties": { "id": "hv61935031", "building_name": "7-eleven", "building_type": "Commerical" }, "geometry": { "type": "Point", "coordinates": [ 114.16916, 22.30344, 0 ] } }
+    { "type": "Feature", "properties": { "id": "uu60251357", "mag": 1.47, "time": 1507268672130, "felt": null, "tsunami": 10 }, "geometry": { "type": "Point", "coordinates": [ 114.17450, 22.29429, 0] } },
+    { "type": "Feature", "properties": { "id": "ak16989960", "mag": 1.1, "time": 1507268319981, "felt": null, "tsunami": 20 }, "geometry": { "type": "Point", "coordinates": [ 114.17470, 22.29729, 0 ] } },
+    { "type": "Feature", "properties": { "id": "hv61935031", "mag": 1.75, "time": 1507267817920, "felt": null, "tsunami": 30 }, "geometry": { "type": "Point", "coordinates": [ 114.17490, 22.29829, 0 ] } },
+    { "type": "Feature", "properties": { "id": "nc72905151", "mag": 1.08, "time": 1507267299070, "felt": null, "tsunami": 10 }, "geometry": { "type": "Point", "coordinates": [114.17473, 22.29729, 0 ] } },
+    { "type": "Feature", "properties": { "id": "mb80259404", "mag": 1.03, "time": 1507266753410, "felt": null, "tsunami": 20 }, "geometry": { "type": "Point", "coordinates": [ 114.17469, 22.29629, 0] } },
     ]
     }
 
-    map.on('load', () => {
-        map.addSource('earthquakes', {
-            type: 'geojson',
-            data: geodata,
-            cluster: true,
-            clusterMaxZoom: 14, // Max zoom to cluster points on
-            clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
-        });
+    map.once('style.load', () => {
+        map.setConfigProperty('basemap', 'showPointOfInterestLabels', false);
+        map.setConfigProperty('basemap', 'showPlaceLabels', false);
+        map.setConfigProperty('basemap', 'showRoadLabels', false);
+        map.setConfigProperty('basemap', 'showTransitLabels', false);
+    });
 
-        map.addLayer({
+    //a event listener called when the load event is fired
+    map.on('load', () => {
+        map.loadImage(
+            'https://tse3.mm.bing.net/th?id=OIP.HoMySyJsIOrYepWFT2r95QHaHk&pid=Api&P=0&h=180',
+            (error, image) => {
+                map.addImage('cat', image);
+
+                map.addSource('buildings', {
+                    type: 'geojson',
+                    data: {
+                        type: 'FeatureCollection',
+                        features: [
+                            {
+                                type: 'Feature',
+                                geometry: {
+                                    type: 'Point',
+                                    coordinates: [114.17576, 22.29490]
+                                }
+                            }
+                        ]
+                    }
+                });
+                map.addLayer({
+                    id: 'cat-on-building',
+                    source: 'buildings',
+                    slot: 'top',
+                    type: 'symbol',
+                    'layout': {
+                        'icon-image': 'cat',
+                        'icon-size': 0.1,
+                        'symbol-placement': 'point',
+                        'symbol-z-elevate': true
+                    }
+                });
+            });
+            
+            map.addSource('earthquakes', {
+                type: 'geojson',
+                data: geodata,
+                cluster: true,
+                clusterMaxZoom: 14, // Max zoom to cluster points on
+                clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
+            });
+            
+
+            map.addLayer({
             id: 'clusters',
             type: 'circle',
             source: 'earthquakes',
@@ -123,14 +159,11 @@ body { margin: 0; padding: 0; }
             );
         });
 
-        // When a click event occurs on a feature in
-        // the unclustered-point layer, open a popup at
-        // the location of the feature, with
-        // description HTML from its properties.
         map.on('click', 'unclustered-point', (e) => {
             const coordinates = e.features[0].geometry.coordinates.slice();
-            const building_name = e.features[0].properties.building_name;
-            const building_type = e.features[0].properties.building_type;
+            const mag = e.features[0].properties.mag;
+            const tsunami =
+                e.features[0].properties.tsunami === 1 ? 'yes' : 'no';
 
             // Ensure that if the map is zoomed out such that
             // multiple copies of the feature are visible, the
@@ -144,7 +177,7 @@ body { margin: 0; padding: 0; }
             new mapboxgl.Popup()
                 .setLngLat(coordinates)
                 .setHTML(
-                    `name: <h3 style = "color: blue; display: inline;">${building_name}</h3><br><p style = "color: grey;">${building_type}</p>`
+                    `magnitude: ${mag}<br>Was there a tsunami?: ${tsunami}`
                 )
                 .addTo(map);
         });
