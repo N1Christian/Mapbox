@@ -10,17 +10,63 @@
 <style>
 body { margin: 0; padding: 0; }
 #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+
+#building_name{
+        position: absolute;
+        left:75px;
+        top:-5px;
+    }
+
+#building_type{
+        position: absolute;
+        left:75px;
+        top:40px;
+    }
+
+#popup{
+        width: 290px;
+        height: 75px;
+        background-color: white;
+        /**border: 1px solid #000; **/
+        padding: 5px;
+        box-sizing: border-box;
+        border-radius: 30px;
+    }
 </style>
 </head>
 <body>
 <div id="map"></div>
 
 <script>
+   const div = window.document.createElement('div');
+    div.id = "popup";
+
+    const img = window.document.createElement('img');
+    img.id = "tag";
+    img.src = "use.png";
+    img.style.display = "inline";
+
+    const h3 = window.document.createElement('h2');
+    h3.id = "building_name";
+    h3.style.display = "inline";
+    h3.style.color = "blue";
+    h3.textContent = "put_building_name_here";
+
+    const p = window.document.createElement('p');
+    p.id = "building_type";
+    p.style.display = "inline";
+    p.style.color = "grey";
+    p.textContent = "put_building_type_here";
+
+    div.appendChild(img);
+    div.appendChild(h3);
+    div.appendChild(p);
+
 	mapboxgl.accessToken = 'pk.eyJ1IjoibjFjaHJpc3RpYW4iLCJhIjoiY2x6MG80Y2hrMTgxaDJrcHNkMWtvZWx0MCJ9.kHvL5J2yJH2lPYSmk7sBng';
     const map = new mapboxgl.Map({
         container: 'map',
         // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
-        style: "mapbox://styles/examples/clg45vm7400c501pfubolb0xz",
+        style: "mapbox://styles/mapbox/standard",
         center: [114.17460, 22.29529],
         zoom: 12
     });
@@ -44,15 +90,24 @@ body { margin: 0; padding: 0; }
     ]
     }
 
-    map.on('load', () => {
-        map.addSource('earthquakes', {
-            type: 'geojson',
-            data: geodata,
-            cluster: true,
-            clusterMaxZoom: 14, // Max zoom to cluster points on
-            clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
-        });
+    map.once('style.load', () => {
+        map.setConfigProperty('basemap', 'showPointOfInterestLabels', false);
+        map.setConfigProperty('basemap', 'showPlaceLabels', false);
+        map.setConfigProperty('basemap', 'showRoadLabels', false);
+        map.setConfigProperty('basemap', 'showTransitLabels', false);
+    });
 
+    //a event listener called when the load event is fired
+    map.on('load', () => {
+        
+            map.addSource('earthquakes', {
+                type: 'geojson',
+                data: geodata,
+                cluster: true,
+                clusterMaxZoom: 14, // Max zoom to cluster points on
+                clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
+            });
+            
         map.addLayer({
             id: 'clusters',
             type: 'circle',
@@ -141,13 +196,20 @@ body { margin: 0; padding: 0; }
                 }
             }
 
-            new mapboxgl.Popup()
+            const popup1 = new mapboxgl.Popup()
+                .setMaxWidth('30em')
                 .setLngLat(coordinates)
-                .setHTML(
-                    `name: <h3 style = "color: blue; display: inline;">${building_name}</h3><br><p style = "color: grey;">${building_type}</p>`
-                )
+                .setDOMContent(div)
                 .addTo(map);
+            
+
         });
+
+    if (popupElem) {
+        const popupElem = popup1.getElement();
+        popupElem.style.maxWidth = "800px";
+        alert("popup found")
+        }
 
         map.on('mouseenter', 'clusters', () => {
             map.getCanvas().style.cursor = 'pointer';

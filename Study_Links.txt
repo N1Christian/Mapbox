@@ -1,0 +1,10 @@
+Mapbox Study Links
+-----------------
+Tons of example to study
+https://docs.mapbox.com/mapbox-gl-js/example/
+
+Tons of methods
+https://docs.mapbox.com/mapbox-gl-js/api/map/#map#addlayer
+
+Some step-by-step tutorial
+https://docs.mapbox.com/help/tutorials/?search=api
