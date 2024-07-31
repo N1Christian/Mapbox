@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!--simplified version removed the shadow-->
 <html>
 <head>
 <meta charset="utf-8">
@@ -91,10 +92,10 @@ body { margin: 0; padding: 0; }
     }
 
     map.once('style.load', () => {
-        map.setConfigProperty('basemap', 'showPointOfInterestLabels', false);
-        map.setConfigProperty('basemap', 'showPlaceLabels', false);
-        map.setConfigProperty('basemap', 'showRoadLabels', false);
-        map.setConfigProperty('basemap', 'showTransitLabels', false);
+        map.setConfigProperty('basemap', 'showPointOfInterestLabels', true);
+        map.setConfigProperty('basemap', 'showPlaceLabels', true);
+        map.setConfigProperty('basemap', 'showRoadLabels', true);
+        map.setConfigProperty('basemap', 'showTransitLabels', true);
     });
 
     //a event listener called when the load event is fired
@@ -118,19 +119,19 @@ body { margin: 0; padding: 0; }
                 'circle-color': [
                     'step',
                     ['get', 'point_count'],
-                    '#332ff9',
+                    '#332fe9',
                     2,
-                    '#332ff9',
+                    '#332fe9',
 
                 ],
                 'circle-radius': [
                     'step',
                     ['get', 'point_count'],
-                    20,
+                    15,
                     3,
-                    30,
+                    20,
 
-                ]
+                ],
             }
         });
 
@@ -142,7 +143,10 @@ body { margin: 0; padding: 0; }
             layout: {
                 'text-field': ['get', 'point_count_abbreviated'],
                 'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
-                'text-size': 21
+                'text-size': 16,
+            },
+            paint: {
+                'text-color':'#ffffff'
             }
         });
 
