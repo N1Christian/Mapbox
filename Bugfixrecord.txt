@@ -1,3 +1,0 @@
-30/7/2024
-
-mapbox://styles/mapbox/standard is the style that contains 3D buildings 

@@ -1,0 +1,12 @@
+30/7/2024
+
+mapbox://styles/mapbox/standard is the style that contains 3D buildings 
+
+31/7/2024
+// Listen for the 'moveend' event to set the pitch after the flyTo animation is complete
+    map.once('moveend', () => {
+        map.setPitch(pitch_num);
+    });
+});
+
+solved the problem caused by the executing time of flyTo function
