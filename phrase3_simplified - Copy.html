@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Create and style clusters</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+<!--external CSS, js files-->
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.5.1/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.5.1/mapbox-gl.js"></script>
+<style>
+body { margin: 0; padding: 0; }
+#map { position: absolute; top: 0; bottom: 0; left:190px; width: 85%; }
+
+#building_name{
+        position: absolute;
+        left:75px;
+        top:-5px;
+    }
+
+#building_type{
+        position: absolute;
+        left:75px;
+        top:40px;
+    }
+
+.popup{
+        width: 290px;
+        height: 75px;
+        background-color: white;
+        /**border: 1px solid #000; **/
+        padding: 5px;
+        box-sizing: border-box;
+        border-radius: 30px;
+    }
+</style>
+</head>
+<body>
+<div id="map"></div>
+
+
+
+<ul style="padding: 0px 0px 0px 15px; font-size:16px; line-height: 2.5;">HK major buildings list
+    <li id="HKG" style="font-size: 10px;">Hong Kong international Airport</li>
+    <li id="PolyU" style="font-size: 10px;">The Hong Kong Polytechnic University</li>
+    <li id="CityU" style="font-size: 10px;">City University of Hong Kong</li>
+
+    <!--<li id="link2" style="font-size: 10px;">display pitch</li>-->
+    <!--<li id="link3" style="font-size: 10px;">display zoom</li>-->
+</ul>
+
+<script>
+   const div = window.document.createElement('div');
+    div.id = "";
+    div.className = "popup";
+
+    const img = window.document.createElement('img');
+    img.id = "tag";
+    img.src = "use.png";
+    img.style.display = "inline";
+
+    const h3 = window.document.createElement('h3');
+    h3.id = "building_name";
+    h3.style.display = "inline";
+    h3.style.color = "blue";
+    h3.textContent = "put_building_name_here";
+
+    const p = window.document.createElement('p');
+    p.id = "building_type";
+    p.style.display = "inline";
+    p.style.color = "grey";
+    p.textContent = "put_building_type_here";
+
+    div.appendChild(img);
+    div.appendChild(h3);
+    div.appendChild(p);
+
+
+    const el = document.createElement('div');
+                el.className = 'marker';
+                el.style.width = "55px";
+                el.style.height = "55px";
+                el.style.backgroundSize = '150%';
+
+                
+	mapboxgl.accessToken = 'pk.eyJ1IjoibjFjaHJpc3RpYW4iLCJhIjoiY2x6MG80Y2hrMTgxaDJrcHNkMWtvZWx0MCJ9.kHvL5J2yJH2lPYSmk7sBng';
+    const map = new mapboxgl.Map({
+        container: 'map',
+        // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
+        style: "mapbox://styles/mapbox/standard",
+        center: [114.17460, 22.29529],
+        zoom: 12
+    });
+    const geodata = {
+    "type": "FeatureCollection",
+    "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+    "features": [
+
+    { "type": "Feature", "properties": { "id": "HKG", "building_name": "Hong Kong international Airport", "building_type": "Infrastructure" }, "geometry": { "type": "Point", "coordinates": [ 113.92486, 22.31213] } },
+    { "type": "Feature", "properties": { "id": "PolyU", "building_name": "The Hong Kong Polytechnic University", "building_type": "Education" }, "geometry": { "type": "Point", "coordinates": [ 114.17982, 22.30460] } },
+    { "type": "Feature", "properties": { "id": "CityU", "building_name": "City University of Hong Kong", "building_type": "Education" }, "geometry": { "type": "Point", "coordinates": [ 114.17307, 22.33644] } }
+
+    ]
+    }
+
+    const imagedata = {
+        "HKG":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgjRYB47G_47co5r0KeFdh2g9JqzXYP9XICg&s",
+        "PolyU":"https://www.polyu.edu.hk/-/media/department/home/thumb/campus-development.jpg?bc=ffffff&w=468&hash=E88F1DAC38173D03318333B89B52F985",
+        "CityU":"https://www.cityu.edu.hk/sites/g/files/asqsls3821/files/styles/crop_cityu_section_intro_735_551/public/2018-12/1.%EF%BC%98_0.jpg?h=70c85895&itok=AeR8u7G0"
+    }
+    map.once('style.load', () => {
+        map.setConfigProperty('basemap', 'showPointOfInterestLabels', true);
+        map.setConfigProperty('basemap', 'showPlaceLabels', true);
+        map.setConfigProperty('basemap', 'showRoadLabels', true);
+        map.setConfigProperty('basemap', 'showTransitLabels', true);
+    });
+
+    //a event listener called when the load event is fired
+    map.on('load', () => {
+        
+            map.addSource('earthquakes', {
+                type: 'geojson',
+                data: geodata,
+                cluster: true,
+                clusterMaxZoom: 14, // Max zoom to cluster points on
+                clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
+            });
+            
+        map.addLayer({
+            id: 'clusters',
+            type: 'circle',
+            source: 'earthquakes',
+            filter: ['has', 'point_count'],
+            paint: {
+                //this part defines the value-depending color and radius
+                'circle-color': [
+                    'step',
+                    ['get', 'point_count'],
+                    '#332fe9',
+                    2,
+                    '#332fe9',
+
+                ],
+                'circle-radius': [
+                    'step',
+                    ['get', 'point_count'],
+                    5,
+                    3,
+                    15,
+
+                ],
+            }
+        });
+
+        map.addLayer({
+            id: 'clusters_shadow',
+            type: 'circle',
+            source: 'earthquakes',
+            paint: {
+                //this part defines the value-depending color and radius
+                'circle-color': [
+                    'step',
+                    ['get', 'point_count'],
+                    '#332ff9',
+                    2,
+                    '#332ff9',
+
+                ],
+                'circle-radius': [
+                    'step',
+                    ['get', 'point_count'],
+                    10,
+                    3,
+                    20,
+
+                ],
+                'circle-opacity':0.8
+            }
+        });
+
+        map.addLayer({
+            id: 'cluster-count',
+            type: 'symbol',
+            source: 'earthquakes',
+            filter: ['has', 'point_count'],
+            layout: {
+                'text-field': ['get', 'point_count_abbreviated'],
+                'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+                'text-size': 16,
+            },
+            paint: {
+                'text-color':'#ffffff'
+            }
+        });
+
+        map.addLayer({
+            id: 'unclustered-point',
+            type: 'circle',
+            source: 'earthquakes',
+            filter: ['!', ['has', 'point_count']],
+            paint: {
+                'circle-color': '#332ff9',
+                'circle-radius': 9,
+                'circle-stroke-width': 5,
+                'circle-stroke-color': '#b4a9e6'
+            }
+        });
+
+
+        // Create a popup, but don't add it to the map yet.
+        const popup1 = new mapboxgl.Popup({closeButton:false, closeOnClick:false})
+
+        var marker1 = new mapboxgl.Marker()
+
+        // inspect a cluster on click
+        //click -> popup + image
+        //zoomout -> both disappear
+        map.on('click', 'clusters', (e) => {
+            const features = map.queryRenderedFeatures(e.point, {
+                layers: ['clusters']
+            });
+            const clusterId = features[0].properties.cluster_id;
+            map.getSource('earthquakes').getClusterExpansionZoom(
+                clusterId,
+                (err, zoom) => {
+                    if (err) return;
+
+                    map.easeTo({
+                        center: features[0].geometry.coordinates,
+                        zoom: zoom
+                    });
+                }
+            );
+        });
+
+        map.on('mouseenter', 'clusters', () => {
+            map.getCanvas().style.cursor = 'pointer';
+        });
+        map.on('mouseleave', 'clusters', () => {
+            map.getCanvas().style.cursor = '';
+        });
+
+        document.getElementById('HKG').addEventListener('click', () => {
+        map.flyTo({
+            center: [113.92486, 22.31213],
+            essential: true,
+            zoom: 17, //default 12
+            pitch:71.5,
+            bearing: 33.3
+            })
+            map.once('zoomend', () => {
+                const coordinates = geodata.features[0].geometry.coordinates;  
+                const building_name = geodata.features[0].properties.building_name;     
+                const building_type = geodata.features[0].properties.building_type;
+                
+                div.querySelector("#building_name").innerHTML = building_name
+                div.querySelector("#building_type").innerHTML = building_type
+                div.id = geodata.features[0].properties.id
+                
+                el.id = geodata.features[0].properties.id;
+
+                el.style.backgroundImage = `url(${imagedata.HKG})`;
+
+                
+                //114.17982, 22.3046
+                //114.17982 - 0.0001
+                //coordinates[0] +:right, -:left
+                const newCoord = [coordinates[0]-0.00015, coordinates[1]-0.0002]
+                console.log(coordinates)
+                marker1 = new mapboxgl.Marker(el)
+                marker1
+                    .setLngLat(newCoord)
+                    .addTo(map);
+
+
+
+                popup1
+                    .setMaxWidth('30em')
+                    .setLngLat(coordinates)
+                    .setDOMContent(div)
+                    .addTo(map)
+                });
+        });
+        
+        document.getElementById('PolyU').addEventListener('click', () => {
+            map.flyTo({
+                zoom: 17.7, //default 12
+                pitch:69.5,
+                bearing: 81.3,
+                center: [114.17982, 22.30460],
+                essential: true
+                });  
+            map.once('zoomend', () => {
+                const coordinates = geodata.features[1].geometry.coordinates;  
+                const building_name = geodata.features[1].properties.building_name;     
+                const building_type = geodata.features[1].properties.building_type;
+                
+                div.querySelector("#building_name").innerHTML = building_name
+                div.querySelector("#building_type").innerHTML = building_type
+                div.id = geodata.features[1].properties.id
+                
+                el.id = geodata.features[1].properties.id;
+                el.style.backgroundImage = `url(${imagedata.PolyU})`;
+
+                
+                //114.17982, 22.3046
+                //114.17982 - 0.0001
+
+                marker1 = new mapboxgl.Marker(el)
+                marker1
+                    .setLngLat([114.17972, 22.3046])
+                    .addTo(map);
+
+
+
+                popup1
+                    .setMaxWidth('30em')
+                    .setLngLat(coordinates)
+                    .setDOMContent(div)
+                    .addTo(map)
+                });
+            
+        });
+
+        document.getElementById('CityU').addEventListener('click', () => {
+        map.flyTo({
+            center: geodata.features[2].geometry.coordinates,
+            essential: true,
+            zoom: 17.9,
+            pitch:61,
+            bearing: -153
+            })
+            map.once('zoomend', () => {
+                const coordinates = geodata.features[2].geometry.coordinates;  
+                const building_name = geodata.features[2].properties.building_name;     
+                const building_type = geodata.features[2].properties.building_type;
+                
+                div.querySelector("#building_name").innerHTML = building_name
+                div.querySelector("#building_type").innerHTML = building_type
+                div.id = geodata.features[2].properties.id
+                
+                el.id = geodata.features[2].properties.id;
+                el.style.backgroundImage = `url(${imagedata.CityU})`;
+                
+                //114.17982, 22.3046
+                //114.17982 - 0.0001
+                //coordinates[0] +:right, -:left
+                const newCoord = [coordinates[0]+0.0001, coordinates[1]+0.0001]
+                console.log(coordinates)
+                marker1 = new mapboxgl.Marker(el)
+                marker1
+                    .setLngLat(newCoord)
+                    .addTo(map);
+
+
+                popup1
+                    .setMaxWidth('30em')
+                    .setLngLat(coordinates)
+                    .setDOMContent(div)
+                    .addTo(map)
+                });
+        });
+
+    map.on('zoom', () => {
+        if (map.getZoom() < 15) {
+            popup1.remove()
+            marker1.remove()
+        }
+
+    });
+
+    map.on('click', 'unclustered-point', (e) => {
+            const coordinates = e.features[0].geometry.coordinates.slice();
+            const building_name = e.features[0].properties.building_name;
+            const building_type = e.features[0].properties.building_type;
+            const building_id = e.features[0].properties.id;
+
+            div.querySelector("#building_name").innerHTML = building_name
+            div.querySelector("#building_type").innerHTML = building_type
+
+            popup1
+                .setMaxWidth('30em')
+                .setLngLat(coordinates)
+                .setDOMContent(div)
+                .addTo(map);
+
+                el.style.backgroundImage = `url(${imagedata[building_id]})`;
+            const newCoord = [coordinates[0]+0.0001, coordinates[1]+0.0001]
+            marker1 = new mapboxgl.Marker(el)
+            marker1
+                .setLngLat(newCoord)
+                .addTo(map);
+
+            
+        });
+    
+//     document.getElementById('link2').addEventListener('click', () => {
+//         alert(map.getBearing());
+//         alert(map.getPitch());
+//     });
+
+//     document.getElementById('link3').addEventListener('click', () => {
+//         alert(map.getZoom());
+//         });
+});
+
+
+</script>
+
+</body>
+</html>

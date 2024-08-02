@@ -10,3 +10,9 @@ mapbox://styles/mapbox/standard is the style that contains 3D buildings
 });
 
 solved the problem caused by the executing time of flyTo function
+
+2/8/2024
+
+Popup
+define the popup globally but don't add it to the map yet
+use addto and remove to control its display

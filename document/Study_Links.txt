@@ -6,5 +6,8 @@ https://docs.mapbox.com/mapbox-gl-js/example/
 Tons of methods
 https://docs.mapbox.com/mapbox-gl-js/api/map/#map#addlayer
 
+Tons of Info about Layers
+https://docs.mapbox.com/style-spec/reference/layers/
+
 Some step-by-step tutorial
 https://docs.mapbox.com/help/tutorials/?search=api
