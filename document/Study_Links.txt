@@ -9,5 +9,12 @@ https://docs.mapbox.com/mapbox-gl-js/api/map/#map#addlayer
 Tons of Info about Layers
 https://docs.mapbox.com/style-spec/reference/layers/
 
+Always refer to the API Reference
+https://docs.mapbox.com/mapbox-gl-js/api/
+
 Some step-by-step tutorial
 https://docs.mapbox.com/help/tutorials/?search=api
+
+------------
+Gd vid
+https://www.youtube.com/watch?v=f3uCSh6LIY0
