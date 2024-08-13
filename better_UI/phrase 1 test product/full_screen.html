@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Full screen</title>
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+  <link href="https://api.mapbox.com/mapbox-gl-js/v3.5.1/mapbox-gl.css" rel="stylesheet">
+  <script src="https://api.mapbox.com/mapbox-gl-js/v3.5.1/mapbox-gl.js"></script>
+
+  <style>
+  body { margin: 0; padding: 0; }
+  #map { position: absolute; top: 0; bottom: 0; left:0px; width: 1440px; }
+
+    .topBar_button{
+      position: absolute;
+      width: 197.17px; height: 55.34px;
+      filter: drop-shadow(2px 8px 10px rgba(0, 0, 0, 0.4))
+      drop-shadow(2px 4px 4px rgba(0, 0, 0, 0.25));
+    }
+
+    .icon {
+      width: 48px; height: 48px;
+      position: absolute;
+    }
+    .icon a{
+      display:block;
+      width: 48px; height: 48px;
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <div class="BottomRightTools" style="width: 52px; height: 160px; left: 1388px; top: 864px; position: absolute">
+    <div class="Compass" style="width: 48px; height: 48px; left: 0px; top: 0px; position: absolute">
+      <img src = "images/Compass.png" alt = "can't open">
+    </div>
+    <div class="ZoomIn" style="width: 48px; height: 48px; left: 4px; top: 56px; position: absolute">
+      <img src = "images/Zoom in.png" alt = "can't open">
+    </div>
+    <div class="ZoomOut" style="width: 48px; height: 48px; left: 4px; top: 112px; position: absolute">
+      <img src = "images/Zoom out.png" alt = "can't open">
+    </div>
+  </div>
+  <div class="TopBar" style="width: 1440px; height: 112px; left: 0px; top: 0px; position: absolute">
+    <div class="Rectangle5" style="width: 1440px; height: 112px; left: 0px; top: 0px; position: absolute; opacity: 0.80; background: #D9D9D9;box-shadow: 0px 8px 10px rgba(0, 0, 0, 0.4), 0px 4px 4px rgba(0, 0, 0, 0.25);"></div>
+    <div class="topBar_button button1" style="left: 53px; top: 28px;">
+      <div class="Ellipse1" style="width: 65.72px; height: 55.34px; left: 131.44px; top: -0px; position: absolute; background: #BDBBBB; border-radius: 9999px"></div>
+      <div class="Ellipse2" style="width: 65.72px; height: 55.34px; left: 0px; top: 0px; position: absolute; background: #BDBBBB; border-radius: 9999px"></div>
+      <div class="Rectangle1" style="width: 131.44px; height: 55.34px; left: 32.86px; top: -0px; position: absolute; background: #BDBBBB"><h1>1</h1></div>
+    </div>
+    <div class="topBar_button button2" style="left: 278px; top: 28px;">
+      <div class="Ellipse1" style="width: 65.72px; height: 55.34px; left: 131.44px; top: -0px; position: absolute; background: #BDBBBB; border-radius: 9999px"></div>
+      <div class="Ellipse2" style="width: 65.72px; height: 55.34px; left: 0px; top: 0px; position: absolute; background: #BDBBBB; border-radius: 9999px"></div>
+      <div class="Rectangle1" style="width: 131.44px; height: 55.34px; left: 32.86px; top: -0px; position: absolute; background: #BDBBBB"><h1>2</h1></div>
+    </div>
+    <div class="topBar_button button3" style=" left: 503px; top: 25px;">
+      <div class="Ellipse1" style="width: 65.72px; height: 55.34px; left: 131.44px; top: -0px; position: absolute; background: #BDBBBB; border-radius: 9999px"></div>
+      <div class="Ellipse2" style="width: 65.72px; height: 55.34px; left: 0px; top: 0px; position: absolute; background: #BDBBBB; border-radius: 9999px"></div>
+      <div class="Rectangle1" style="width: 131.44px; height: 55.34px; left: 32.86px; top: -0px; position: absolute; background: #BDBBBB"><h1>3</h1></div>
+    </div>
+    <div class="topBar_button button4" style="left: 728px; top: 28px;">
+      <div class="Ellipse1" style="width: 65.72px; height: 55.34px; left: 131.44px; top: -0px; position: absolute; background: #BDBBBB; border-radius: 9999px"></div>
+      <div class="Ellipse2" style="width: 65.72px; height: 55.34px; left: 0px; top: 0px; position: absolute; background: #BDBBBB; border-radius: 9999px"></div>
+      <div class="Rectangle1" style="width: 131.44px; height: 55.34px; left: 32.86px; top: -0px; position: absolute; background: #BDBBBB"><h1>4</h1></div>
+    </div>
+    <div class="topBar_button button5" style="left: 953px; top: 28px;">
+      <div class="Ellipse1" style="width: 65.72px; height: 55.34px; left: 131.44px; top: -0px; position: absolute; background: #BDBBBB; border-radius: 9999px"></div>
+      <div class="Ellipse2" style="width: 65.72px; height: 55.34px; left: 0px; top: 0px; position: absolute; background: #BDBBBB; border-radius: 9999px"></div>
+      <div class="Rectangle1" style="width: 131.44px; height: 55.34px; left: 32.86px; top: -0px; position: absolute; background: #BDBBBB"><h1>5</h1></div>
+    </div>
+
+
+  </div>
+  <div class="icon Search" style="left: 1304px; top: 32px">
+    <img src="images/Search.png" alt="can't open">
+  </div>
+  <div class="icon Minimize2" style="left: 29px; top: 962px">
+    <a href = "phrase1.html"><img src="images/Minimize 2.png" alt="can't open"></a>
+  </div>
+  <div class="icon LogOut" style="left: 1374px; top: 29px">
+    <img src="images/Log out.png" alt="can't open">
+  </div>
+
+  <script src = "full_screen_script1.js"></script>
+</body>
+</html>

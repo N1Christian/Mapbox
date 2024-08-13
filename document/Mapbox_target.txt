@@ -3,3 +3,7 @@ implement
 a list that triggers Flyto each dot
 
 popup tag at the lowest layer
+
+------------------
+(12/8)
+Use figma to create the UI to speed up the development progress

@@ -17,4 +17,5 @@ https://docs.mapbox.com/help/tutorials/?search=api
 
 ------------
 Gd vid
+How to create a CSS navigation bar in 6 minutes! 
 https://www.youtube.com/watch?v=f3uCSh6LIY0
